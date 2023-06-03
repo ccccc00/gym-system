@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>体育管场地管理系统</title>
+    <link rel="stylesheet" href="../css/toast.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/SMS-index.css" />
+    <link rel="stylesheet" href="../css/swiper.min.css">
+    <link rel="stylesheet" href="../css/button.css">
+    <link rel="stylesheet" href="../css/showMessage.css">
+    <link rel="stylesheet" href="../css/animate.css">
+</head>
+<!--<link rel="stylesheet" href="bootstrap.css">-->
+<style>
+    .content {
+        margin-top: 100px;
+    }
+
+    .greenbg {
+        width: 100%;
+        background-color: #ffffff;
+    }
+
+    .greenbr {
+        text-align: center;
+        border: solid;
+        border-radius: 8px;
+        border-width: 40px 30px;
+        border-color: #ffffff;
+        color: #000000;
+    }
+
+    .submit {
+        height: 45px;
+    }
+
+    .fit {
+        width: 100%;
+    }
+
+    .row {
+        margin-top: 10px;
+    }
+
+    .panal {
+        width: 50%;
+        margin: 0 auto;
+        margin-bottom: 30px;
+    }
+
+    .box {
+        margin-bottom: 20px;
+    }
+
+    #btn_sub {
+        width: 150px;
+        height: 40px;
+        font-weight:bold;
+        background-color: lightsteelblue;
+        border: 1px solid lightsteelblue ;
+    }
+</style>
+<script>
+    function getByClass(parent, cls) {
+        if (parent.getElementsByClassName) {
+            return parent.getElementsByClassName(cls);
+        } else {
+            var res = [];
+            var reg = new RegExp(' ' + cls + ' ', 'i')
+            var ele = parent.getElementsByTagName('*');
+            for (var i = 0; i < ele.length; i++) {
+                if (reg.test(' ' + ele[i].className + ' ')) {
+                    res.push(ele[i]);
+                }
+            }
+            return res;
+        }
+    }
+
+    function get(index) {
+        var choose = getByClass(document, 'greenbr');
+        for (let i = 0; i < choose.length; i++) {
+            choose[i].style.backgroundColor = "#fff";
+            choose[i].style.color = "#000000";
+        }
+        choose[index].style.backgroundColor = "#fff";
+        choose[index].style.color = "#87ceeb";
+
+        var count = document.getElementById("count");
+        if(index == 0) { money = 100; } else
+        if(index == 1) { money = 250; } else
+        if(index == 2) { money = 500; } else
+        if(index == 3) { money = 1000; } else
+        { money = 100; }
+        count.value = money;
+    }
+</script>
+
+<body>
+<div id="app">
+    <!--引入头部-->
+    <div class="header">
+        <div class="real_header">
+            <a href="#" style="text-decoration: none; color: #337ab7;"> <img src="../img/logo.png"class="head_img"> <span class="head_span1">体育馆场地管理系统</span>
+            </a>
+            <div class="login">
+                <div>
+                    <input type="hidden" v-model="user_Id"  id="user_Id" name="user_Id" readonly >
+                </div>
+                <div >
+                    <a v-if="user_Id ==''" v-on:click="toLogin" style="margin-left: -60px;">登录</a>
+                    <a v-else style="margin-left: -60px;" ></a>
+                </div>
+                <div class="dropdown" style="margin-top: -22px;">
+                    <a v-if="user_Id ==''" class="dropdown-toggle" data-toggle="dropdown"
+                       role="button" aria-haspopup="true" aria-expanded="false"> <i
+                            class="glyphicon glyphicon-user"></i> 个人中心
+                    </a>
+                    <a id="session_user" v-else class="dropdown-toggle" data-toggle="dropdown"
+                       role="button" aria-haspopup="true" aria-expanded="false"> <i
+                            class="glyphicon glyphicon-user"></i> {{user_Id}}
+                    </a>
+                    <ul class="dropdown-menu " aria-labelledby="dropdownMenu1">
+                        <li>
+                            <a v-on:click="toCenter" data-toggle="modal" >
+                                <i class="glyphicon glyphicon-user"></i>
+                                个人中心
+                            </a>
+                        </li>
+                        <li role="separator" class="divider"></li>
+                        <li>
+                            <a v-on:click="loginOut" >
+                                <i class="glyphicon glyphicon-off"></i>
+                                注销登录
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<div class="top-bar">
+    <div class="box-top">
+        <ul class="top-ui">
+            <li>
+                <a href="#"><img src="../img/send.png"></a>
+            </li>
+            <li>
+                <a href="/user/index">首页</a>
+            </li>
+            <li>
+                <a id="checkmem" href="javascript:void(0)" onclick="checkmem()">场地预约</a>
+            </li>
+            <li>
+                <a href="/user/vip.html">会员管理</a>
+            </li>
+            <li>
+                <a href="/user/announcement.html">系统通知</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<style>
+    /*兼容浏览器*/
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    .content1 {
+        width: 100%;
+        height: 100%;
+    }
+
+    .content-left {
+        width: 19%;
+        height: 600px;
+        background-color: lightsteelblue;
+        float: left;
+    }
+
+    .content-right {
+        width: 81%;
+        height: 600px;
+        background-color: honeydew;
+        float: left;
+    }
+
+    .left-title {
+        width: 100%;
+        height: 50px;
+    }
+
+    .left-title > a {
+        display: block;
+        width: 100%;
+        height: 50px;
+        line-height: 50px;
+        text-align: center;
+        color: white;
+        /*去掉a下默认下划线*/
+        text-decoration: none;
+    }
+
+    /*分割线*/
+    .seg {
+        height: 1px;
+        width: 100%;
+        background-color: black;
+    }
+
+    .nav {
+        /*上下5,左右0*/
+        margin: 5px 0;
+    }
+
+    /*菜单项主标题*/
+    .nav-title {
+        height: 40px;
+        width: 100%;
+        color: black;
+        text-align: center;
+        line-height: 40px;
+        cursor: pointer;
+    }
+
+    /*子标题内容区*/
+    .nav-content {
+        width: 100%;
+        height: 100%;
+        background-color: powderblue;
+    }
+
+    /*子标题的样式*/
+    .nav-content > a {
+        display: block;
+        width: 100%;
+        height: 30px;
+        color: black;
+        text-decoration: none;
+        text-align: center;
+        line-height: 30px;
+        font-size: 13px;
+    }
+
+    /*子标题鼠标经过时的改变颜色*/
+    .nav-content > a:hover {
+        color: black;
+        background-color: steelblue;
+    }
+
+    /*内容区*/
+    .content-right{
+        font-size: 15px;
+        line-height: 8px;
+        text-align: center;
+    }
+</style>
+
+
+
+<div class = "content1">
+    <!--左侧导航栏-->
+    <div class = "content-left">
+        <div class = "left-title">
+            <a href = "/user/vip.html">会员管理</a>
+        </div>
+
+        <!--水平线-->
+        <div class = "seg"></div>
+
+        <!--菜单栏导航-->
+
+
+        <!--水平线-->
+        <div class = "seg"></div>
+    </div>
+    <div class="content-right">
+
+        <!--右侧内容区-->
+
+        <div class="rg_layout">
+
+            <div class="content">
+                <hr>
+                <form class="form panal">
+
+
+                    <div class="form-group row box">
+                        <label class="col-xs-3 control-label">当前余额</label>
+                        <div class="col-xs-9">
+                            <input type="number" class="form-control" id="vip_Account" name="vip_Account" v-model="vip_Account" readonly value="0">
+                        </div>
+                    </div>
+
+                    <div class="form-group row box">
+                        <label  class="col-xs-3 control-label">手机号</label>
+                        <div class="col-xs-9">
+                            <input style="width:150px" type="text" class="form-control" id="vip_Phone" placeholder="这里将显示您的手机号" name="vip_Phone" v-model="vip_Phone" placeholder="手机号码" readonly >
+                        </div>
+                    </div>
+
+                    <div class="form-group row box">
+                        <div class="col-xs-12 fit">
+                            <button type="button" id="btn_sub" class="sign-up-btn" onclick="chongzhi()">支付</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+<script src="../js/jquery-3.4.1.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/swiper.min.js"></script>
+<script src="../js/toast.js"></script>
+<script src="../js/vue.js"></script>
+<script>
+
+    let app = new Vue({
+        el: '#app',
+        data: {
+            user_Id:""
+        },
+        mounted:function(){
+            this.getSession();//页面加载函数
+            this.getAccount();
+        },
+        methods: {
+            getSession: function(){
+                $.get("/user/getSession",function (data) {
+                    app.user_Id = data.user_Id;
+                    app.vip_Phone=data.user_Id;
+                    document.getElementById("vip_Phone").value=data.user_Id;
+
+                },"json");
+            },
+            loginOut: function () {
+                $.post("/user/logout",function (data) {
+                    window.location.href="/user/index";
+                },"json");
+            },
+            toCenter: function () {
+                window.location.href="/user/center";
+            },
+            toLogin:function () {
+                window.location.href="/user/login";
+            },
+            getAccount: function(){
+                $.get("/user/getAccount",function (data) {
+                    app.vip_Account=data;
+                    document.getElementById("vip_Account").value=data;
+                },"json");
+            }
+        }
+    });
+
+    function chongzhi() {
+        var vip_Phone = $('#vip_Phone').val();
+        var vip_NewAccount=$('#count').val().trim()+$('#vip_Account').val().trim();
+        if($('#vip_Phone').val().trim()==''){
+            showMessage('手机号不能为空',2000,true,'bounceIn-hastrans','bounceOut-hastrans');
+        } else{
+            $.ajax({
+                type: 'POST',
+                url: "/user/memberpay",
+                dataType: "json",
+                data: JSON.stringify({"vip_Phone":$('#vip_Phone').val().trim(),"vip_NewAccount":parseInt($('#count').val().trim())+parseInt($('#vip_Account').val().trim())}),
+                contentType : "application/json",
+                success: function(data) {
+
+                    showMessage('您已充值成功，请继续预约！',2000,true,'bounceIn-hastrans','bounceOut-hastrans');
+                    window.location.href="/user/index";
+
+                }
+            });
+        }
+    }
+
+    function checkmem(){
+        if($('#session_user').text() == ""){
+            showMessage('请登录后再预约',2000,true,'bounceIn-hastrans','bounceOut-hastrans');
+            setTimeout("window.location.href='login.html'", 1500);
+        }else{
+            //
+            $.ajax({
+                    type: 'GET',
+                    url: "/user/checkmember",
+                    dataType: "json",
+                    data: "user_Id="+$('#user_Id').val(),
+                    contentType : "application/json;charset=utf-8",
+                    success: function(data) {
+                        if(data.info!=null)
+                        {
+                            if(data.info.vip_Id!=null){
+                                window.location.href="/user/yuyue1.html";}
+                            else
+                            {
+                                var r=confirm('查询到您有多张会员卡，请前往前台办理。点击取消可继续预约，但会失去会员优惠！');
+                                if (r==false){
+                                    window.location.href="/user/yuyue.html";
+                                }
+                            }
+
+                        }
+                        else
+                        {
+                            window.location.href="/user/yuyue.html";
+                        }
+
+                    }
+
+                }
+            );
+        }
+    }
+    function checkmem1(){
+
+        $.ajax({
+                type: 'GET',
+                url: "/user/checkmember",
+                dataType: "json",
+                data: "user_Id="+$('#user_Id').val(),
+                contentType : "application/json;charset=utf-8",
+                success: function(data) {
+                    if (data.info != null) {
+                        alert('您已经是会员，请勿重复注册！');
+                    } else {
+                        window.location.href = "/user/vipzhuce.html";
+                    }
+                }
+            }
+        );
+    }
+
+    function checkmem2(){
+
+        $.ajax({
+                type: 'GET',
+                url: "/user/checkmember",
+                dataType: "json",
+                data: "user_Id="+$('#user_Id').val(),
+                contentType : "application/json;charset=utf-8",
+                success: function(data) {
+                    if (data.info == null) {
+                        alert('您还不是会员，请先注册！');
+                        window.location.href = "/user/vipzhuce.html";
+                    } else {
+                        window.location.href = "/user/member-pay.html";
+                    }
+                }
+            }
+        );
+    }
+
+</script>
+
+</html>

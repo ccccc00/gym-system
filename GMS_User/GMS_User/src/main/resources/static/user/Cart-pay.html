@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>订单支付</title>
+    <link rel="stylesheet" href="../css/toast.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/SMS-index.css" />
+    <link rel="stylesheet" href="../css/swiper.min.css">
+    <link rel="stylesheet" href="../css/button.css">
+    <link rel="stylesheet" href="../css/showMessage.css">
+    <link rel="stylesheet" href="../css/animate.css">
+</head>
+<body>
+<style type="text/css">
+	.mycss{
+		display:flex;
+		align-items:center;
+		justify-content:flex-start;
+	}
+</style>
+<!-- 顶部 -->
+<header>
+	<div id="app">
+		<!--引入头部-->
+		<div class="header">
+			<div class="real_header">
+				<a href="#" style="text-decoration: none; color: #337ab7;"> <img src="../img/logo.png"class="head_img"> <span class="head_span1">体育馆场地管理系统</span>
+				</a>
+				<div class="login">
+					<div >
+						<a v-if="user_Id ==''" v-on:click="toLogin" style="margin-left: -60px;">登录</a>
+						<a v-else style="margin-left: -60px;" ></a>
+					</div>
+					<div class="dropdown" style="margin-top: -22px;">
+						<a v-if="user_Id ==''" class="dropdown-toggle" data-toggle="dropdown"
+						   role="button" aria-haspopup="true" aria-expanded="false"> <i
+								class="glyphicon glyphicon-user"></i> 个人中心
+						</a>
+						<a id="session_user" v-else class="dropdown-toggle" data-toggle="dropdown"
+						   role="button" aria-haspopup="true" aria-expanded="false"> <i
+								class="glyphicon glyphicon-user"></i> {{user_Id}}
+						</a>
+						<ul class="dropdown-menu " aria-labelledby="dropdownMenu1">
+							<li>
+								<a v-on:click="toCenter" data-toggle="modal" >
+									<i class="glyphicon glyphicon-user"></i>
+									个人中心
+								</a>
+							</li>
+							<li role="separator" class="divider"></li>
+							<li>
+								<a v-on:click="loginOut" >
+									<i class="glyphicon glyphicon-off"></i>
+									注销登录
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+</header>
+<div class="top-bar">
+	<div class="box-top">
+		<ul class="top-ui">
+			<li>
+				<a href="#"><img src="../img/send.png"></a>
+			</li>
+			<li>
+				<a href="/user/index">首页</a>
+			</li>
+			<li>
+				<a href="#">场地预约</a>
+			</li>
+			<li>
+				<a href="#">会员管理</a>
+			</li>
+			<li>
+				<a href="#">系统通知</a>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<!-- 展示栏 -->
+<div class="container" style="margin-top: 5px;">
+
+	<a>
+		<span class="head_span2">预约订单支付</span>
+	</a>
+	<!--场馆类型标签页+场馆展示页-->
+	<div class="row " style="margin-top: 10px;">
+		<div class="col-lg-12" style="background-color: #FFFFFF;">
+			<!-- 场馆类型标签页 -->
+			<ul class="nav nav-tabs" id="myTab"  style="margin-top: 5px;">
+				<!-- 异步请求 -->
+			</ul>
+			<!-- 场馆展示页 -->
+			<div class="tab-content row" id="message">
+				<!-- 异步请求 -->
+			</div>
+
+			<div class="mycss"><img src="../img/true.png">
+				<p style="font-size: 20px;font-weight: bolder;">
+					<span>订单提交成功，请选择支付方式</span>
+				</p>
+			</div>
+			<!--显示订单信息-->
+			<p class="left" style="text-indent:2em;color: red">
+				<span>
+					订单号：xxxxxxxxxx
+				</span>
+			</p>
+			<p class="left" style="text-indent:2em; color: red">
+				<span>
+				 	预订信息 : 乒乓球场5号，2023-5-23 15:00-16:00
+				</span>
+			</p>
+
+			<div class="wayw w1190 boxS">
+				<div class="way">
+					<h3>
+						支付金额 ：<b>￥68.00</b>
+					</h3>
+					<div class="wayArea">
+						<ul class="clearfix">
+							<li class="clearfix">
+								<input type="radio" checked name="funct">
+									<img src="../img/zhifubao.png" alt="">
+							</li>
+							<li class="clearfix">
+								<input type="radio" checked name="funct">
+									<img src="../img/weixin.png" alt="">
+							</li>
+						</ul>
+						<a style="text-decoration: none; margin-top: 4px; float: right; margin-right: 16px;  background-color: #35bbfb;"
+						   class="button button-primary button-pill button-small">确认支付
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	</div>
+
+<!-- 底部 -->
+<div class="container-fluid f_top">
+    <div class="row">
+        <div class="footer" style="position: relative;">
+            版权所有©GMS-体育馆场地管理系统 &nbsp;&nbsp;&nbsp;</div>
+    </div>
+</div>
+
+</body>
+
+<script src="../js/jquery-3.4.1.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/swiper.min.js"></script>
+<script src="../js/toast.js"></script>
+<script src="../js/vue.js"></script>
+<script>
+	let app = new Vue({
+		el: '#app',
+		data: {
+			user_Id:""
+		},
+		mounted:function(){
+			this.getSession();//页面加载函数
+		},
+		methods: {
+			getSession: function(){
+				$.get("/user/getSession",function (data) {
+					app.user_Id = data.user_Id
+				},"json");
+			},
+			loginOut: function () {
+				$.post("/user/logout",function (data) {
+					window.location.href="/user/index";
+				},"json");
+			},
+			toCenter: function () {
+				window.location.href="/user/center";
+			},
+			toLogin:function () {
+				window.location.href="/user/login";
+			}
+		}
+	});
+
+	//提交预约订单
+	function submitIfExits(){
+		if(venue_id==""||venue_id==undefined){
+			showMessage('请选择您要预约的场馆',2000,true,'bounceIn-hastrans','bounceOut-hastrans');
+		}else{
+			if($('#session_user').text() == ""){
+				showMessage('请登录后再预约',2000,true,'bounceIn-hastrans','bounceOut-hastrans');
+			}else{
+				//异步提交订单
+				$.ajax({
+					"async":false,
+					"url":"/user/confirmOrder?venue_Id="+e,
+					"type":"POST",
+					"data":JSON.stringify({order_Price:a,order_Date:b,order_St:c,order_Ed:d}),
+					"dataType":"json",
+					"contentType":"application/json",
+					"success":function(data){
+						if (data.info=="ok"){
+							showMessage('预约成功，即将跳转到支付界面',1500,true,'bounceIn-hastrans','bounceOut-hastrans')
+							setTimeout("window.location.href='/user/Cart-pay.html'", 1500);
+						} else{
+							showMessage('预约失败，该场馆可能已被预约',3000,true,'bounceIn-hastrans','bounceOut-hastrans');
+						}
+					}
+				});
+			}
+		}
+	}
+
+</script>
+
+</html>

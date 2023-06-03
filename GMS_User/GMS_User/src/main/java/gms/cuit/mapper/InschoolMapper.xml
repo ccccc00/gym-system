@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="gms.cuit.mapper.InschoolMapper">
+    <!--根据学工号、姓名、身份证号获取用户 -->
+    <select id="findSchooolMem" resultType="Gms_Inschool">
+        select * from gms_inschool where inschool_name=#{username} and inschool_id=#{school_id} and inschool_idcard=#{idcard}
+    </select>
+</mapper>

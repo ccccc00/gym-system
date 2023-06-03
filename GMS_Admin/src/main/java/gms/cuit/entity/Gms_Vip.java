@@ -1,0 +1,91 @@
+package gms.cuit.entity;
+
+public class Gms_Vip {
+    /** 会员姓名 */
+    private String vip_Name ;
+    /** 会员手机号 */
+    private String vip_Phone ;
+    /** 会员身份证号 */
+    private String vip_Id ;
+    /** 会员邮箱 */
+    private String vip_Email;
+    /** 会员余额 */
+    private Integer vip_Account;
+    /** 会员性别 */
+    private String vip_Gender;
+    /** 会员的用户id */
+    private String vip_Userid;
+
+    public Gms_Vip(){
+        super();
+    }
+
+    @Override
+    public String toString() {
+        return "Gms_Vip{" +
+                "vip_Name='" + vip_Name + '\'' +
+                ", vip_Phone='" + vip_Phone + '\'' +
+                ", vip_Id='" + vip_Id + '\'' +
+                ", vip_Email='" + vip_Email + '\'' +
+                ", vip_Account=" + vip_Account +
+                ", vip_Gender='" + vip_Gender + '\'' +
+                ", vip_User_Id='" + vip_Userid + '\'' +
+                '}';
+    }
+
+    public String getVip_Name() {
+        return vip_Name;
+    }
+
+    public String getVip_Phone() {
+        return vip_Phone;
+    }
+
+    public String getVip_Id() {
+        return vip_Id;
+    }
+
+    public String getVip_Email() {
+        return vip_Email;
+    }
+
+    public Integer getVip_Account() {
+        return vip_Account;
+    }
+
+    public String getVip_Gender() {
+        return vip_Gender;
+    }
+
+    public String getVip_Userid() {
+        return vip_Userid;
+    }
+
+    public void setVip_Name(String vip_Name) {
+        this.vip_Name = vip_Name;
+    }
+
+    public void setVip_Phone(String vip_Phone) {
+        this.vip_Phone = vip_Phone;
+    }
+
+    public void setVip_Id(String vip_Id) {
+        this.vip_Id = vip_Id;
+    }
+
+    public void setVip_Email(String vip_Email) {
+        this.vip_Email = vip_Email;
+    }
+
+    public void setVip_Account(Integer vip_Account) {
+        this.vip_Account = vip_Account;
+    }
+
+    public void setVip_Gender(String vip_Gender) {
+        this.vip_Gender = vip_Gender;
+    }
+
+    public void setVip_User_Id(String vip_Userid) {
+        this.vip_Userid = vip_Userid;
+    }
+}

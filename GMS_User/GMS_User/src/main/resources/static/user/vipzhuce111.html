@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>会员注册</title>
+    <link rel="stylesheet" href="../css/toast.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/SMS-index.css" />
+    <link rel="stylesheet" href="../css/swiper.min.css">
+    <link rel="stylesheet" href="../css/button.css">
+    <link rel="stylesheet" href="../css/showMessage.css">
+    <link rel="stylesheet" href="../css/animate.css">
+    <title>注册页面</title>
+    <style>
+        body {
+            background: url("./img/play01.jpg");
+        }
+
+        .rg_form{
+            text-align:center;
+        }
+        .rg_layout {
+            width: 1500px;
+            height: 900px;
+            border: 8px solid #EEEEEE;
+            background-color: white;
+            margin: auto;
+        }
+
+        .rg_left {
+            float: left;
+            margin: 15px;
+        }
+        .rg_center {
+            float:left;
+        }
+        .rg_right {
+            float: right;
+            margin: 15px;
+        }
+
+        .rg_left > p:first-child {
+            color:dodgerblue;
+            font-size: 20px;
+        }
+
+        .rg_left > p:last-child {
+            color:dodgerblue;
+            font-size: 20px;
+        }
+
+        .rg_right > p:first-child {
+            font-size: 15px;
+
+        }
+        .rg_right p a {
+            color:pink;
+        }
+
+        .td_left {
+            width: 100px;
+            height: 45px;
+            text-align: right;
+        }
+        .td_right {
+            padding-left: 50px ;
+        }
+
+        #username, #password, #email, #name, #tel, #birthday, #checkcode {
+            width: 251px;
+            height: 32px;
+            border: 1px solid #A6A6A6;
+            border-radius: 5px;
+            padding-left: 10px;
+        }
+
+        #checkcode {
+            width: 110px;
+        }
+
+        #img_check {
+            height: 32px;
+            vertical-align: middle;
+        }
+
+        #btn_sub {
+            width: 150px;
+            height: 40px;
+            background-color: lightsteelblue;
+            border: 1px solid lightsteelblue ;
+        }
+
+        .error {
+            color:red;
+        }
+        #td_sub {
+            padding-left: 150px;
+        }
+        .code
+        {
+            font-family:Arial;
+            font-style:italic;
+            color:blue;
+            font-size:30px;
+            border:0;
+            padding:2px 3px;
+            letter-spacing:3px;
+            font-weight:bolder;
+            float:right;
+            cursor:pointer;
+            width:150px;
+            height:50px;
+            line-height:60px;
+            text-align:center;
+            vertical-align:middle;
+            background-color:#D8B7E3;
+        }
+        span {
+            text-decoration:none;
+            font-size:12px;
+            color:#288bc4;
+            padding-left:10px;
+        }
+
+        span:hover {
+            text-decoration:underline;
+            cursor:pointer;
+        }
+    </style>
+    <script>
+        window.onload = function(){
+            document.getElementById("form").onsubmit = function(){
+                return checkUsername() && checkPassword();
+            };
+            document.getElementById("username").onblur = checkUsername;
+            document.getElementById("password").onblur = checkPassword;
+        };
+
+        function checkUsername(){
+            var username = document.getElementById("username").value;
+            var reg_username = /^\w{6,12}$/;
+            var flag = reg_username.test(username);
+            var s_username = document.getElementById("s_username");
+            if(flag){
+                s_username.innerHTML = "<img width='35' height='25' src='img/gou.png'/>";
+            }else{
+                s_username.innerHTML = "用户名格式有误";
+            }
+            return flag;
+        }
+
+        function checkPassword(){
+            var password = document.getElementById("password").value;
+            var reg_password = /^\w{6,12}$/;
+            var flag = reg_password.test(password);
+            var s_password = document.getElementById("s_password");
+            if(flag){
+                s_password.innerHTML = "<img width='35' height='25' src='img/gou.png'/>";
+            }else{
+                s_password.innerHTML = "密码格式有误";
+            }
+            return flag;
+        }
+
+    </script>
+</head>
+<body>
+
+<div id="app">
+    <!--引入头部-->
+    <div class="header">
+        <div class="real_header">
+            <a href="#" style="text-decoration: none; color: #337ab7;"> <img src="../img/logo.png" class="head_img"> <span class="head_span1">体育馆场地管理系统</span>
+            </a>
+            <div class="login">
+                <div >
+                    <a v-if="user_Id ==''" v-on:click="toLogin" style="margin-left: -60px;">登录</a>
+                    <a v-else style="margin-left: -60px;" ></a>
+                </div>
+                <div class="dropdown" style="margin-top: -22px;">
+                    <a v-if="user_Id ==''" class="dropdown-toggle" data-toggle="dropdown"
+                       role="button" aria-haspopup="true" aria-expanded="false"> <i
+                            class="glyphicon glyphicon-user"></i> 个人中心
+                    </a>
+                    <a id="session_user" v-else class="dropdown-toggle" data-toggle="dropdown"
+                       role="button" aria-haspopup="true" aria-expanded="false"> <i
+                            class="glyphicon glyphicon-user"></i> {{user_Id}}
+                    </a>
+                    <ul class="dropdown-menu " aria-labelledby="dropdownMenu1">
+                        <li>
+                            <a v-on:click="toCenter" data-toggle="modal" >
+                                <i class="glyphicon glyphicon-user"></i>
+                                个人中心
+                            </a>
+                        </li>
+                        <li role="separator" class="divider"></li>
+                        <li>
+                            <a v-on:click="loginOut" >
+                                <i class="glyphicon glyphicon-off"></i>
+                                注销登录
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<div class="top-bar">
+    <div class="box-top">
+        <ul class="top-ui">
+            <li>
+                <a href="#"><img src="../img/send.png"></a>
+            </li>
+            <li>
+                <a href="/user/index">首页</a>
+            </li>
+            <li>
+                <a href="/user/yuyue.html">场地预约</a>
+            </li>
+            <li>
+                <a href="/user/vip.html">会员管理</a>
+            </li>
+            <li>
+                <a href="/user/announcement.html">系统通知</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<style>
+    /*兼容浏览器*/
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    .content {
+        width: 100%;
+        height: 600px;
+    }
+
+    .content-left {
+        width: 19%;
+        height: 600px;
+        background-color: lightsteelblue;
+        float: left;
+    }
+
+    .content-right {
+        width: 81%;
+        height: 600px;
+        background-color: honeydew;
+        float: left;
+    }
+
+    .left-title {
+        width: 100%;
+        height: 50px;
+    }
+
+    .left-title > a {
+        display: block;
+        width: 100%;
+        height: 50px;
+        line-height: 50px;
+        text-align: center;
+        color: white;
+        /*去掉a下默认下划线*/
+        text-decoration: none;
+    }
+
+    /*分割线*/
+    .seg {
+        height: 1px;
+        width: 100%;
+        background-color: black;
+    }
+
+    .nav {
+        /*上下5,左右0*/
+        margin: 5px 0;
+    }
+
+    /*菜单项主标题*/
+    .nav-title {
+        height: 40px;
+        width: 100%;
+        color: black;
+        text-align: center;
+        line-height: 40px;
+        cursor: pointer;
+    }
+
+    /*子标题内容区*/
+    .nav-content {
+        width: 100%;
+        height: 100%;
+        background-color: powderblue;
+    }
+
+    /*子标题的样式*/
+    .nav-content > a {
+        display: block;
+        width: 100%;
+        height: 30px;
+        color: black;
+        text-decoration: none;
+        text-align: center;
+        line-height: 30px;
+        font-size: 13px;
+    }
+
+    /*子标题鼠标经过时的改变颜色*/
+    .nav-content > a:hover {
+        color: black;
+        background-color: steelblue;
+    }
+
+    /*内容区*/
+    .content-right{
+        font-size: 15px;
+        line-height: 8px;
+        text-align: center;
+    }
+</style>
+
+<div class = "content">
+    <!--左侧导航栏-->
+    <div class = "content-left">
+        <div class = "left-title">
+            <a href = "/user/vip.html">会员管理</a>
+        </div>
+
+        <!--水平线-->
+        <div class = "seg"></div>
+
+        <!--菜单栏导航-->
+        <div class = "nav">
+            <!--每一个菜单栏项-->
+            <div class = "nav-menu">
+                <div class = "nav-content">
+                    <a href = "/user/vipzhuce.html" id="huiyuanzhuce" >会员注册</a>
+                    <a href = "/user/member-pay.html" id="huiyuanchongzhi">会员充值</a>
+                </div>
+            </div>
+        </div>
+        <!--水平线-->
+        <div class = "seg"></div>
+    </div>
+    <div class="content-right"  >
+        <div class="sign-up-from">
+            <div id="register_app">
+                <form class="register-form">
+                    <h1>会员注册</h1>
+                    <input type="text" class="input-box" id="vip_Userid"  v-model="vip_Userid" name="vip_Userid" placeholder="学号/工号" required="true"/>
+                    <input type="text" class="input-box"  v-model="vip_Gender" name="vip_Gender" placeholder="性别" required="true"/>
+                    <input type="text" class="input-box"  v-model="vip_Id" name="vip_Id" placeholder="身份证号" required="true"/>
+                    <input type="password" class="input-box" id="vip_Password" v-model="vip_Password" name="vip_Password" placeholder="密码" required="true"/>
+                    <input type="text" class="input-box" id="vip_Phone"  name="vip_Phone" placeholder="手机号码" required="true" >
+                    <input type="email" class="input-box" id="vip_Email"  v-model="vip_Email" name="vip_Email" placeholder="电子邮件" required="true" />
+                    <input type="text" class="input-box" id="vip_Name"  v-model="vip_Name" name="vip_Name" placeholder="姓名" required="true" />
+                    <input type="text" class="input-box" id="vip_Account"  v-model="vip_Account" name="vip_Account" placeholder="余额" required="true" />
+                    <button type="button" class="sign-up-btn" v-on:click="register">创建</button>
+                </form>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+<!--        &lt;!&ndash;右侧内容区&ndash;&gt;-->
+<!--        <div class="rg_layout">-->
+<!--            <div class="rg_center">-->
+<!--                <div class="rg_form" id="zhuce" >-->
+<!--                    <form class="form1">-->
+<!--                        <table>-->
+<!--                            <tr>-->
+<!--                                <td class="td_left"><label for="vip_userid">用户名</label></td>-->
+<!--                                <td class="td_right">-->
+<!--                                    <input type="text" name="username" id="vip_userid" placeholder="请输入用户名">-->
+<!--                                    <span id="s_username" class="error"></span>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+
+<!--                            <tr>-->
+<!--                                <td class="td_left"><label for="vip_password">密码</label></td>-->
+<!--                                <td class="td_right">-->
+<!--                                    <input type="password" name="password" id="vip_password" placeholder="请输入密码">-->
+<!--                                    <span id="s_password" class="error"></span>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+
+<!--                            <tr>-->
+<!--                                <td class="td_left"><label for="vip_id">身份证号码</label></td>-->
+<!--                                <td class="td_right">-->
+<!--                                    <input type="text" name="userid" id="vip_id" placeholder="请输入身份证号">-->
+<!--                                    <span id="s_userid" class="error"></span>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+
+<!--                            <tr>-->
+<!--                                <td class="td_left"><label for="vip_email">Email</label></td>-->
+<!--                                <td class="td_right"><input type="email" name="email" id="vip_email" placeholder="请输入邮箱"></td>-->
+<!--                            </tr>-->
+
+<!--                            <tr>-->
+<!--                                <td class="td_left"><label for="vip_name">姓名</label></td>-->
+<!--                                <td class="td_right"><input type="text" name="name" id="vip_name" placeholder="请输入姓名"></td>-->
+<!--                            </tr>-->
+
+<!--                            <tr>-->
+<!--                                <td class="td_left"><label for="vip_phone">手机号</label></td>-->
+<!--                                <td class="td_right"><input type="text" name="tel" id="vip_phone" placeholder="请输入手机号"></td>-->
+<!--                            </tr>-->
+<!--                            <div class="msg" style="display: none" id="msge">-->
+
+<!--                            </div>-->
+
+<!--                            <tr>-->
+<!--                                <td class="td_left"><label for="vip_gender">性别</label></td>-->
+<!--                                <td class="td_right" id="vip_gender">-->
+<!--                                    <input type="radio" name="gender" value="male" checked> 男-->
+<!--                                    <input type="radio" name="gender" value="female"> 女-->
+<!--                                </td>-->
+<!--                            </tr>-->
+
+
+<!--                            <tr>-->
+<!--                                <td class="td_left"><label>验证码</label></td>-->
+<!--                                <td class="td_right"><input type="text" id="inputCode" placeholder="请输入验证码"></td>-->
+<!--                                <td > <div id="checkCode" class="code"  onclick="createCode(4)" ></div></td>-->
+<!--                                <td > <span onclick="createCode(4)">看不清换一张</span></td>-->
+<!--                                <td ><input type="button" onclick="validateCode()" style="height: 30px;width: 50px;background-color: #c1e2b3;border-color: #8DC27E;" value="确定" /></td>-->
+<!--                            </tr>-->
+
+
+<!--                            <tr>-->
+<!--                                <td class="td_left"><label for="vip_account">充值金额</label></td>-->
+<!--                                <td class="td_right" id="vip_account">-->
+<!--                                    <input type="radio" name="money" value="500" checked> 500-->
+<!--                                    <input type="radio" name="money" value="1000"> 1000-->
+<!--                                </td>-->
+<!--                            </tr>-->
+
+
+<!--                            <tr>-->
+<!--                                <td colspan="2" id="td_sub"><input type="submit" id="btn_sub" v-on:click="register_vip" value="注册"></td>-->
+<!--                            </tr>-->
+<!--                        </table>-->
+
+<!--                    </form>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            </div>-->
+<!--        </div>-->
+    </div>
+</div>
+
+<!--尾巴-->
+<div class="container-fluid f_top">
+    <div class="row">
+        <div class="footer" style="position: fixed;">
+            版权所有@有请下一组 &nbsp;&nbsp;</div>
+    </div>
+</div>
+
+</body>
+
+<script src="../js/jquery-3.4.1.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/swiper.min.js"></script>
+<script src="../js/toast.js"></script>
+<script src="../js/vue.js"></script>
+<script src="../js/captcha-generate.js"></script>
+<script>
+
+    let app = new Vue({
+        el: '#app',
+        data: {
+            user_Id:""
+        },
+        mounted:function(){
+            this.getSession();//页面加载函数
+        },
+        methods: {
+            getSession: function(){
+                $.get("/user/getSession",function (data) {
+                    app.user_Id = data.user_Id
+                },"json");
+            },
+            loginOut: function () {
+                $.post("/user/logout",function (data) {
+                    window.location.href="/user/index";
+                },"json");
+            },
+            toCenter: function () {
+                window.location.href="/user/center";
+            },
+            toLogin:function () {
+                window.location.href="/user/login";
+            }
+        }
+    });
+
+    let flag = true;
+    let isEmail = true;
+    let isUserid=true;
+    let isPass=true;
+    let isId=true;
+    let isphone=true;
+    // 同一个页面跳转
+    $(function () {
+        $('.message a').click(function () {
+            $('form').animate({
+                height: 'toggle',
+                opacity: 'toggle'
+            }, 'slow');
+        });
+
+        //验证邮箱格式是否正确
+        $('#vip_Email').blur(function(){
+            var vip_Email =$('#vip_Email').val();
+            if(!vip_Email.match(/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/)){
+                showMessage('邮箱格式不正确',2000,true,'bounceIn-hastrans','bounceOut-hastrans');
+                isEmail = false
+            }else{
+                isEmail = true
+            }
+        });
+
+        //限制学号
+        $('#vip_Userid').blur(function(){
+            var vip_Userid=$('#vip_Userid').val();
+            if(!vip_Userid.match(/^\d{8}$/))
+            {
+                showMessage('学号不正确',2000,true,'bounceIn-hastrans','bounceOut-hastrans');
+                isUserid=false;
+            }
+            else{
+                isUserid=true;
+            }
+        });
+
+        //限制密码
+        $('#vip_Password').blur(function(){
+            var vip_Password=$('#vip_Password').val();
+            if(!vip_Password.match( /^[a-zA-Z0-9]{6,15}$/))
+            {
+                showMessage('密码格式不正确，请输入6到15位数字或字母',2000,true,'bounceIn-hastrans','bounceOut-hastrans');
+                isPass=false;
+            }
+            else{
+                isPass=true;
+            }
+        });
+
+        //身份证号
+        $('#vip_Id').blur(function(){
+            var vip_Id=$('#vip_Id').val();
+            if(!vip_Id.match(/^\d{18}$/))
+            {
+                showMessage('身份证号格式不正确',2000,true,'bounceIn-hastrans','bounceOut-hastrans');
+                isId=false;
+            }
+            else{
+                isId=true;
+            }
+        });
+
+        $('#vip_Phone').blur(function(){
+            var vip_phone=$('#vip_Phone').val();
+            if(!vip_phone.match(/^1[3456789]\d{9}$/))
+            {
+                showMessage('请输入正确的手机号',2000,true,'bounceIn-hastrans','bounceOut-hastrans');
+                isphone=false;
+            }
+            else{
+                isphone=true;
+            }
+        });
+
+
+        //后台校验用户是否存在(通过检查身份证号)
+        $('#vip_Id').blur(function(){
+            var vip_Id =$('#vip_Id').val();
+            $.ajax({
+                "url":"/user/checkVipname",
+                "data":{"vip_Id":vip_Id},
+                "type":"get",
+                "dataType":"json",
+                "success":function(data){
+                    if(data.info != null){
+                        flag = false;
+                        showMessage('您已是会员,请勿重复注册',2000,true,'bounceIn-hastrans','bounceOut-hastrans');
+                    }else{
+                        flag = true;
+                    }
+                }
+            });
+        });
+
+        //后台校验用户是否存在(通过检查手机号)
+        $('#vip_Phone').blur(function(){
+            var vip_Phone =$('#vip_Phone').val();
+            $.ajax({
+                "url":"/user/checkVipPhone",
+                "data":{"vip_Phone":vip_Phone},
+                "type":"get",
+                "dataType":"json",
+                "success":function(data){
+                    if(data.info != null){
+                        flag = false;
+                        showMessage('您已是会员,请勿重复注册',2000,true,'bounceIn-hastrans','bounceOut-hastrans');
+                    }else{
+                        flag = true;
+                    }
+                }
+            });
+        });
+    })
+
+    let registervip = new Vue({
+        el: "#register_app",
+        data: {
+            vip_Userid:"",   //用户名，学号
+            vip_Gender: "",
+            vip_Id:"",  //身份证号
+            vip_Password:"",
+            vip_Phone:"",
+            vip_Email:"",
+            vip_Name:"",   //姓名
+            vip_Account:""
+        },
+        methods: {
+            register:function(){
+                if(!flag){
+                    showMessage('用户id已被占用，请重新取名',2000,true,'bounceIn-hastrans','bounceOut-hastrans');
+                }else if(!isEmail){
+                    showMessage('邮件格式错误',2000,true,'bounceIn-hastrans','bounceOut-hastrans');
+                }else if(!isUserid){
+                    showMessage('用户名格式错误',2000,true,'bounceIn-hastrans','bounceOut-hastrans');
+                }else if(!isPass){
+                    showMessage('密码格式错误',2000,true,'bounceIn-hastrans','bounceOut-hastrans');
+                }else if(!isId){
+                    showMessage('身份证号格式错误',2000,true,'bounceIn-hastrans','bounceOut-hastrans');
+                }else if(!isphone){
+                    showMessage('手机号格式错误',2000,true,'bounceIn-hastrans','bounceOut-hastrans');
+                }else{
+                    $.ajax({
+                        type: "POST",
+                        url: "/user/register_vip",
+                        dataType: "json",
+                        data: JSON.stringify({vip_Name:this.vip_Name,vip_Phone:this.vip_Phone,vip_Id:this.vip_Id,vip_Password:this.vip_Password,vip_Email:this.vip_Email,vip_Account:this.vip_Account,vip_Gender:this.vip_Gender,vip_Userid:this.vip_Userid}),
+                        contentType: "application/json",
+                        success: function (data) {
+                            if(data.state == "1"){
+                                showMessage('恭喜你注册成功！',3000,true,'bounceIn-hastrans','bounceOut-hastrans')
+                                setTimeout("window.location.href='/user/index'", 3000);
+                            }else if(data.state == "0"){
+                                showMessage('注册失败，请重试！',3000,true,'bounceIn-hastrans','bounceOut-hastrans')
+                            }
+                        }
+                    });
+                }
+            }
+        },
+
+    });
+
+</script>
+
+</html>
